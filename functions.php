@@ -264,7 +264,7 @@ function get_users_paginated_and_searched($conn, $search_term, $page, $users_per
     $stmt_count->close();
 
     // Query per recuperare gli utenti della pagina corrente
-    $sql = "SELECT id, username, email, subscription_status, account_status, suspended_until, last_login_at, stripe_customer_id, stripe_subscription_id, subscription_end_date, created_at, friend_code FROM users WHERE (username LIKE ? OR email LIKE ?) ORDER BY id ASC LIMIT ? OFFSET ?";
+    $sql = "SELECT id, username, email, subscription_status, account_status, suspended_until, last_login_at, stripe_customer_id, stripe_subscription_id, subscription_end_date, created_at, friend_code, receives_emails FROM users WHERE (username LIKE ? OR email LIKE ?) ORDER BY id ASC LIMIT ? OFFSET ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ssii", $search_query, $search_query, $users_per_page, $offset);
     $stmt->execute();

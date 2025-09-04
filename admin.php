@@ -135,6 +135,7 @@ $current_page = 'admin'; // Per evidenziare il link nella sidebar
                                 <th class="p-4">Email</th>
                                 <th class="p-4">Stato Account</th>
                                 <th class="p-4">Abbonamento</th>
+                                <th class="p-4">Stato Email</th>
                                 <th class="p-4 text-left">Azioni</th>
                             </tr>
                         </thead>
@@ -166,11 +167,19 @@ $current_page = 'admin'; // Per evidenziare il link nella sidebar
                                             <?php echo ucfirst($user['subscription_status']); ?>
                                         </span>
                                     </td>
+                                    <td class="p-4 text-center">
+                                        <?php if ($user['receives_emails']): ?>
+                                            <span title="Email attive"><svg class="w-5 h-5 text-green-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg></span>
+                                        <?php else: ?>
+                                            <span title="Email disattivate"><svg class="w-5 h-5 text-yellow-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6" /></svg></span>
+                                        <?php endif; ?>
+                                    </td>
                                     <td class="p-4">
                                         <div class="flex items-center space-x-2">
                                             <button onclick='openUserInfoModal(<?php echo json_encode($user); ?>)' class="p-2 hover:bg-gray-700 rounded-full" title="Mostra dettagli utente"><svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></button>
                                             <button onclick='openSubscriptionModal(<?php echo json_encode($user); ?>)' class="p-2 hover:bg-gray-700 rounded-full" title="Gestisci Abbonamento"><svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v-1m0-1V4m0 2.01M12 18v-2m0-2v-2m0-2V8m0 0h.01M12 18h.01M12 20h.01M12 4h.01M4 12h-2m14 0h2m-7-7v2m0-2V3m2 7h-2m-2 0h-2m7-2v-2m0 2v2m0 0v2m0-2h2m-2-2h-2m-2-2v2m-2-2v-2m2 7h2m-2-2h-2m-2 2v-2m2-2v2"></path></svg></button>
                                             <?php if ($user['id'] != 1): ?>
+                                                <button onclick='toggleEmailStatus(<?php echo $user['id']; ?>)' class="p-2 hover:bg-gray-700 rounded-full" title="Attiva/Disattiva Email"><svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg></button>
                                                 <a href="impersonate.php?id=<?php echo $user['id']; ?>" class="p-2 hover:bg-gray-700 rounded-full" title="Accedi come <?php echo htmlspecialchars($user['username']); ?>"><svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg></a>
                                                 <button onclick='openSuspendModal(<?php echo json_encode($user); ?>)' class="p-2 hover:bg-gray-700 rounded-full" title="Sospendi/Riattiva Utente"><svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path></svg></button>
                                             <?php endif; ?>
@@ -359,6 +368,12 @@ $current_page = 'admin'; // Per evidenziare il link nella sidebar
         backdrop?.classList.add('opacity-0');
         content?.classList.add('opacity-0', 'scale-95');
         setTimeout(() => modal.classList.add('hidden'), 300);
+    }
+
+    function toggleEmailStatus(userId) {
+        if (confirm("Sei sicuro di voler cambiare lo stato di ricezione email per questo utente?")) {
+            window.location.href = 'admin_toggle_email.php?id=' + userId;
+        }
     }
 
     function formatDate(dateString) {
