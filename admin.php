@@ -607,5 +607,6 @@ $current_page = 'admin'; // Per evidenziare il link nella sidebar
         </div>
     </div>
 </div>
+<script src="admin_bulk_actions.js"></script>
 </body>
 </html>
