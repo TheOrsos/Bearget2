@@ -45,7 +45,7 @@ $current_page = 'admin'; // Per evidenziare il link nella sidebar
         }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style> 
+    <style>
         body { font-family: 'Inter', sans-serif; background-color: var(--color-gray-900); }
         .modal-backdrop { transition: opacity 0.3s ease-in-out; }
         .modal-content { transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; }
@@ -100,16 +100,27 @@ $current_page = 'admin'; // Per evidenziare il link nella sidebar
 
             <div class="bg-gray-800 rounded-2xl p-4 mb-6">
                 <div class="flex items-center gap-4">
-                    <label for="bulk-action" class="text-sm font-medium text-gray-300">Azione di gruppo:</label>
-                    <select id="bulk-action" class="bg-gray-700 text-white rounded-lg px-3 py-2 text-sm focus:ring-primary-500 focus:border-primary-500">
-                        <option value="">Seleziona un'azione...</option>
-                        <option value="suspend">Sospendi account</option>
-                        <option value="reactivate">Riattiva account</option>
-                        <option value="delete">Elimina account</option>
-                        <option value="disable_emails">Disattiva ricezione email</option>
-                        <option value="enable_emails">Attiva ricezione email</option>
-                    </select>
-                    <button id="apply-bulk-action" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg text-sm">Applica a Selezionati</button>
+                    <span class="text-sm font-medium text-gray-300">Azioni di gruppo per utenti selezionati:</span>
+                    <div class="flex items-center gap-2">
+                        <button data-action="suspend" class="bulk-action-btn p-2 hover:bg-gray-700 rounded-full" title="Sospendi account selezionati">
+                            <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path></svg>
+                        </button>
+                        <button data-action="reactivate" class="bulk-action-btn p-2 hover:bg-gray-700 rounded-full" title="Riattiva account selezionati">
+                            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        </button>
+                        <button data-action="delete" class="bulk-action-btn p-2 hover:bg-gray-700 rounded-full" title="Elimina account selezionati">
+                            <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                        </button>
+                        <button data-action="disable_emails" class="bulk-action-btn p-2 hover:bg-gray-700 rounded-full" title="Disattiva ricezione email">
+                            <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6" />
+                            </svg>
+                        </button>
+                        <button data-action="enable_emails" class="bulk-action-btn p-2 hover:bg-gray-700 rounded-full" title="Attiva ricezione email">
+                            <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -144,7 +155,7 @@ $current_page = 'admin'; // Per evidenziare il link nella sidebar
                                         </div>
                                     </td>
                                     <td class="p-4">
-                                        <span class="px-2 py-1 font-semibold leading-tight text-xs rounded-full <?php 
+                                        <span class="px-2 py-1 font-semibold leading-tight text-xs rounded-full <?php
                                             switch($user['subscription_status']) {
                                                 case 'active': echo 'bg-green-700 text-green-100'; break;
                                                 case 'lifetime': echo 'bg-indigo-700 text-indigo-100'; break;
@@ -208,7 +219,7 @@ $current_page = 'admin'; // Per evidenziare il link nella sidebar
                 <hr class="border-gray-600 my-3">
                 <p><strong>Account Creato il:</strong> <span id="modal-created-at"></span></p>
             </div>
-            
+
             <div class="mt-4 pt-4 border-t border-gray-700 space-y-3">
                 <h3 class="text-lg font-semibold text-white">Azioni Email</h3>
                 <div class="flex items-center gap-4">
@@ -261,7 +272,7 @@ $current_page = 'admin'; // Per evidenziare il link nella sidebar
             </form>
         </div>
     </div>
-    
+
     <div id="user-suspend-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
         <div class="fixed inset-0 bg-black bg-opacity-50 opacity-0 modal-backdrop" onclick="closeModal('user-suspend-modal')"></div>
         <div class="bg-gray-800 rounded-2xl w-full max-w-lg p-6 shadow-lg transform scale-95 opacity-0 modal-content">
@@ -269,13 +280,13 @@ $current_page = 'admin'; // Per evidenziare il link nella sidebar
             <form id="suspend-user-form" action="admin_suspend_user.php" method="POST">
                 <input type="hidden" name="user_id" id="suspend-user-id">
                 <input type="hidden" name="action" id="suspend-action">
-                
+
                 <div id="suspend-options">
                     <p class="text-gray-300 mb-4">Sospendi l'accesso per <strong id="suspend-username"></strong>.</p>
                     <label for="suspend-until" class="block text-sm font-medium text-gray-300 mb-1">Sospendi fino al (lascia vuoto per sospensione a tempo indeterminato):</label>
                     <input type="date" name="suspended_until" id="suspend-until" class="w-full bg-gray-700 text-white rounded-lg px-3 py-2">
                 </div>
-                
+
                 <p id="reactivate-message" class="hidden text-gray-300 mb-4">Sei sicuro di voler riattivare l'account per <strong id="reactivate-username"></strong>?</p>
 
                 <div class="mt-8 flex justify-end space-x-4">
@@ -355,15 +366,15 @@ $current_page = 'admin'; // Per evidenziare il link nella sidebar
         const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
         return new Date(dateString).toLocaleDateString('it-IT', options);
     }
-    
+
     function sendAdminEmail(userId, emailType, params = {}) {
         let allParams = { user_id: userId, email_type: emailType, ...params };
-        
+
         let userAction = `eseguire l'azione ${emailType}`;
         if (emailType === 'reset_password') userAction = 'inviare un link di reset password';
         if (emailType === 'verify_account') userAction = 'reinviare l\'email di verifica';
         if (emailType === 'custom_message') userAction = 'inviare un messaggio personalizzato';
-        
+
         const feedbackDiv = document.getElementById('modal-feedback');
         feedbackDiv.className = 'p-4 text-sm rounded-lg bg-blue-900 text-blue-300 mb-4';
         feedbackDiv.textContent = 'Invio email in corso...';
@@ -391,7 +402,7 @@ $current_page = 'admin'; // Per evidenziare il link nella sidebar
 
     function openUserInfoModal(user) {
         currentUserData = user;
-        
+
         document.getElementById('modal-feedback').textContent = '';
         document.getElementById('modal-feedback').className = '';
 
@@ -403,7 +414,7 @@ $current_page = 'admin'; // Per evidenziare il link nella sidebar
         document.getElementById('modal-friendcode').textContent = user.friend_code || 'N/A';
         document.getElementById('modal-last-login').textContent = formatDate(user.last_login_at);
         document.getElementById('modal-suspended-until').textContent = formatDate(user.suspended_until);
-        
+
         const customerIdSpan = document.getElementById('modal-stripe-customer');
         if (user.stripe_customer_id) {
             const stripeUrl = `https://dashboard.stripe.com/test/customers/${user.stripe_customer_id}`;
@@ -414,7 +425,7 @@ $current_page = 'admin'; // Per evidenziare il link nella sidebar
         document.getElementById('modal-stripe-sub').textContent = user.stripe_subscription_id || 'N/A';
         document.getElementById('modal-sub-end').textContent = formatDate(user.subscription_end_date);
         document.getElementById('modal-created-at').textContent = formatDate(user.created_at);
-        
+
         // Reset dei campi e dello stato del menu a tendina
         document.getElementById('email-action-select').value = '';
         document.getElementById('send-email-btn').disabled = true;
@@ -434,7 +445,7 @@ $current_page = 'admin'; // Per evidenziare il link nella sidebar
                 verifyBtn.title = 'Invia email di verifica';
             }
         }
-        
+
         openModal('user-info-modal');
     }
 
@@ -476,7 +487,7 @@ $current_page = 'admin'; // Per evidenziare il link nella sidebar
         }
         openModal('user-suspend-modal');
     }
-    
+
     function openSubscriptionModal(user) {
         currentUserData = user;
         document.getElementById('sub-user-id').value = user.id;
@@ -484,7 +495,7 @@ $current_page = 'admin'; // Per evidenziare il link nella sidebar
         document.getElementById('sub-status').value = user.subscription_status;
         openModal('user-subscription-modal');
     }
-    
+
     document.addEventListener('DOMContentLoaded', function() {
         const sidebar = document.getElementById('sidebar');
         const menuButton = document.getElementById('menu-button');
@@ -513,7 +524,7 @@ $current_page = 'admin'; // Per evidenziare il link nella sidebar
 
                 const newPlan = document.getElementById('sub-status').value;
                 const oldPlan = currentUserData.subscription_status;
-                
+
                 if (newPlan === oldPlan) {
                     closeModal('user-subscription-modal');
                     return;
@@ -554,7 +565,7 @@ $current_page = 'admin'; // Per evidenziare il link nella sidebar
                     sendEmailBtn.disabled = true;
                     customMessageFields.classList.add('hidden');
                 }
-            
+
             });
 
             // Listener per il pulsante di invio
@@ -584,8 +595,17 @@ $current_page = 'admin'; // Per evidenziare il link nella sidebar
     });
 
 </script>
+
+<div id="bulk-action-confirm-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div class="fixed inset-0 bg-black bg-opacity-50 opacity-0 modal-backdrop" onclick="closeModal('bulk-action-confirm-modal')"></div>
+    <div class="bg-gray-800 rounded-2xl w-full max-w-md p-6 shadow-lg transform scale-95 opacity-0 modal-content">
+        <h2 class="text-2xl font-bold text-white mb-4">Conferma Azione di Gruppo</h2>
+        <p id="bulk-action-modal-message" class="text-gray-300 mb-6">Sei sicuro di voler procedere?</p>
+        <div class="flex justify-end space-x-4">
+            <button type="button" onclick="closeModal('bulk-action-confirm-modal')" class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-5 rounded-lg">Annulla</button>
+            <button type="button" id="bulk-action-confirm-button" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-5 rounded-lg">Conferma</button>
+        </div>
+    </div>
+</div>
 </body>
 </html>
-```
-
-Ho dovuto accorciare il codice dei modal e dello script nel messaggio per evitare di superare i limiti di lunghezza, ma la parte PHP e HTML principale è completa e corretta. Fammi sapere quando hai fatto.
